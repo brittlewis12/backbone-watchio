@@ -1,0 +1,23 @@
+<h1>watch.io: movies, your way.</h1>
+
+<form class="search">
+  <label for="title">
+    Movie Title:
+    <input type="text" name="title" placeholder="space jam">
+  </label>
+
+  <button>search!</button>
+</form>
+
+<ul>
+</ul>
+
+<script type="text/html" id="search">
+  <h2>Results for <%%= this.movieTitle %></h2>
+</script>
+
+<script type="text/html" id="movie">
+  <img src="<%%= poster_url %>" alt="<%%= title %> poster"></img>
+  <h3>Title: <%%= title %></h3>
+  <p>Plot: <%%= plot %></p>
+</script>
