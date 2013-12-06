@@ -32,6 +32,8 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+gem 'httparty'
+
 gem 'rspec-rails', group: :test
 
 gem 'pry-rails', group: [:test, :development]

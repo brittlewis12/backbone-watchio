@@ -38,15 +38,19 @@ $$ | \_/ $$ | $$$$$$  |$$$$$$$  |$$$$$$$$\ $$$$$$$$\\$$$$$$  |
 
 */
 
-var Movie = Backbone.Model.extend({});
+var Movie = Backbone.Model.extend({
+  defaults: {
+    seen: false
+  }
+});
 
 /*
 
  $$$$$$\   $$$$$$\  $$\       $$\       $$$$$$$$\  $$$$$$\
 $$  __$$\ $$  __$$\ $$ |      $$ |      $$  _____|$$  __$$\
 $$ /  \__|$$ /  $$ |$$ |      $$ |      $$ |      $$ /  \__|
-$$ |      $$ |  $$ |$$ |      $$ |      $$$$$\    $$ |      $$$$$$\
-$$ |      $$ |  $$ |$$ |      $$ |      $$  __|   $$ |      \______|
+$$ |      $$ |  $$ |$$ |      $$ |      $$$$$\    $$ |     $$$$$$\
+$$ |      $$ |  $$ |$$ |      $$ |      $$  __|   $$ |     \______|
 $$ |  $$\ $$ |  $$ |$$ |      $$ |      $$ |      $$ |  $$\
 \$$$$$$  | $$$$$$  |$$$$$$$$\ $$$$$$$$\ $$$$$$$$\ \$$$$$$  |
  \______/  \______/ \________|\________|\________| \______/
@@ -66,14 +70,12 @@ $$$$$$$$\ $$$$$$\  $$$$$$\  $$\   $$\  $$$$$$\
 
 var SearchResults = Backbone.Collection.extend({
   model: Movie,
-
-  url: // FIXME ?
+  url: "movies/search"
 })
 
 var Watchlist = Backbone.Collection.extend({
   model: Movie,
-
-  url: // FIXME ?
+  url: "movies"
 })
 
 /*
@@ -111,7 +113,8 @@ var SearchResultsView = Backbone.View.extend({
   initialize: function(options) {
     this.title = options.movieTitle;
     this.$el.appendTo($("body"));
-    this.fetchSearchResults();
+    // this.fetchSearchResults();
+    this.fetch({data: this.title}); // ? mebe?
   },
 
   render: function() {
@@ -119,15 +122,15 @@ var SearchResultsView = Backbone.View.extend({
     this.$el.html(compiledTemplate);
   },
 
-  fetchSearchResults: function() {
-    $.ajax({
-      method: "GET",
-      url: "/movies/search?q=" + this.movieTitle,
-      dataType: "json",
-      success: this.listResults,
-      context: this
-    });
-  },
+  // fetchSearchResults: function() {
+  //   $.ajax({
+  //     method: "GET",
+  //     url: "/movies/search?q=" + this.movieTitle,
+  //     dataType: "json",
+  //     success: this.listResults,
+  //     context: this
+  //   });
+  // },
 
   listResults: function(movies) {
     movies.each(function(movieJSON) {
