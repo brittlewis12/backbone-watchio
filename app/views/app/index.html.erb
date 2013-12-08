@@ -2,22 +2,22 @@
 
 <form class="search">
   <label for="title">
-    Movie Title:
+    Search Movies:
     <input type="text" name="title" placeholder="space jam">
   </label>
 
   <button>search!</button>
 </form>
 
-<ul>
-</ul>
-
 <script type="text/html" id="search">
-  <h2>Results for <%%= this.movieTitle %></h2>
+  <h3>Results for "<%%= this.searchedTitle %>"</h3>
 </script>
 
 <script type="text/html" id="movie">
-  <img src="<%%= poster_url %>" alt="<%%= title %> poster"></img>
-  <h3>Title: <%%= title %></h3>
-  <p>Plot: <%%= plot %></p>
+  <h2><%%= Title %></h2>
+  <%% if (Poster !== 'N/A') { %>
+    <img src="<%%= Poster %>" alt="<%%= Title %> poster"></img>
+  <%% } %>
+  <button class="add">Add to Watchlist</button>
+  <p><%%= Plot %></p>
 </script>

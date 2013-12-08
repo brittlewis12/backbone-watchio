@@ -7,8 +7,11 @@ to tie together everything we've been learning about backbone in class and integ
 
 ### USER STORIES
 
+<!--
 * as a user, I want to be able to do everything for the app on a single page, because changing pages is confusing
 * ..., I want to be able to search for a movie so I can add it to my watchlist
+  -->
+
 * ..., I want to be able to add a movie to my watchlist so I can remember to watch it later
 * ..., I want my watchlist to persist beyond refresh so I can come back to my watchlist
 * ..., I want to mark a movie as seen, so I can keep track of which movies I still need to see
@@ -22,9 +25,6 @@ to tie together everything we've been learning about backbone in class and integ
     * string    : title,        null: false
     * string    : poster_url,   null: false
     * text      : description,  null: false
-
-* watchlist
-    * reference : movie_id
     * boolean   : seen,       default: false
     * integer   : rating
 
@@ -41,7 +41,9 @@ to tie together everything we've been learning about backbone in class and integ
 
 ##### I want to have an account to log in to, so I don't have to host my own server to keep a watchlist
 
-model
+models
+
+* add watchlist table
 
 * user
     * string    : username

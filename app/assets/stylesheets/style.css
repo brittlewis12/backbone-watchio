@@ -1,3 +1,17 @@
 body {
   font-family: Helvetica, sans-serif;
 }
+
+.movie-result {
+  clear: both;
+  padding-bottom: 40px;
+  max-width: 90%;
+}
+
+.movie-result img {
+  display: inline;
+  float: left;
+  max-width: 30%;
+  padding-bottom: 40px;
+  padding-right: 20px;
+}

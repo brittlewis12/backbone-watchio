@@ -15,15 +15,19 @@ $$ |  $$ | $$$$$$  |\$$$$$$  |   $$ |   $$$$$$$$\ $$ |  $$ |
 
 var WatchioRouter = Backbone.Router.extend({
   routes: {
-    "movies/search/:movieTitle": "searchMovies"
+    "": "index"
+    "movies/search/:title": "searchMovies"
   },
 
-  searchMovies: function(movieTitle) {
-    new SearchResultsView({title: movieTitle});
+  index: function() {
+    // instantiates the search form view?
+    // maybe just does nothing
+  },
+
+  searchMovies: function(title) {
+    new SearchResultsView({collection: searchResults, searchedTitle: title});
   }
 });
-
-new WatchioRouter();
 
 /*
 
@@ -41,6 +45,10 @@ $$ | \_/ $$ | $$$$$$  |$$$$$$$  |$$$$$$$$\ $$$$$$$$\\$$$$$$  |
 var Movie = Backbone.Model.extend({
   defaults: {
     seen: false
+  },
+
+  addToWatchlist: function() {
+    myWatchlist.add(this);
   }
 });
 
@@ -70,13 +78,13 @@ $$$$$$$$\ $$$$$$\  $$$$$$\  $$\   $$\  $$$$$$\
 
 var SearchResults = Backbone.Collection.extend({
   model: Movie,
-  url: "movies/search"
-})
+  url: "/movies/search/"
+});
 
 var Watchlist = Backbone.Collection.extend({
   model: Movie,
-  url: "movies"
-})
+  url: "/movies"
+});
 
 /*
 
@@ -101,20 +109,25 @@ var FormView = Backbone.View.extend({
   searchMovies: function(e) {
     e.preventDefault();
     var title = this.$el.find("input[name='title']").val();
-    Backbone.history.navigate("movies/search/" + title);
+    Backbone.history.navigate("movies/search/" + title, {trigger: true});
   }
 });
 
 var SearchResultsView = Backbone.View.extend({
   tagName: "div",
+  className: "search",
 
-  template: _.template($("script#movie").html()),
+  template: _.template($("script#search").html()),
 
   initialize: function(options) {
-    this.title = options.movieTitle;
+    this.searchedTitle = options.searchedTitle;
     this.$el.appendTo($("body"));
-    // this.fetchSearchResults();
-    this.fetch({data: this.title}); // ? mebe?
+    this.collection.fetch({
+      data: {title: this.searchedTitle},
+      success: this.listResults,
+      reset: true
+    });
+    this.render();
   },
 
   render: function() {
@@ -122,41 +135,42 @@ var SearchResultsView = Backbone.View.extend({
     this.$el.html(compiledTemplate);
   },
 
-  // fetchSearchResults: function() {
-  //   $.ajax({
-  //     method: "GET",
-  //     url: "/movies/search?q=" + this.movieTitle,
-  //     dataType: "json",
-  //     success: this.listResults,
-  //     context: this
-  //   });
-  // },
-
   listResults: function(movies) {
-    movies.each(function(movieJSON) {
-      var movie = new MovieView({model: Movie});
+    _.each(movies.models, function(movie) {
+      var movieObj = new MovieView({model: new Movie(movie.attributes)});
     });
-    this.render();
   }
 });
 
 var MovieView = Backbone.View.extend({
   tagName: "div",
+  className: "movie-result",
+
+  events: {
+    "click button.add": "addToWatchlist"
+  },
 
   template: _.template($("script#movie").html()),
 
-  initialize: function(options) {
-    // may not need the below: pass model into this bad boy
-    // this.title = options.title; // FIXME may be different
-    // this.poster_url = options.poster_url; // FIXME may be different
-    // this.plot = options.plot; // FIXME may be different
+  initialize: function() {
+    this.$el.appendTo($("div.search"));
     this.render();
-  }
+  },
 
   render: function() {
-    var compiledTemplate = this.template(this.model.toJSON())
+    var compiledTemplate = this.template(this.model.toJSON());
+    this.$el.html(compiledTemplate);
+  },
+
+  addToWatchlist: function() {
+    this.model.addToWatchlist();
   }
 })
+
+// Something should listen to myWatchlist for "add" events and
+// Backbone.history.navigate to a watchlist path that instantiates
+// and renders a WatchlistView, which will ping the server for
+// all movies
 
 /*
 $$$$$$$\  $$\   $$\ $$\   $$\           $$$$$$$\   $$$$$$\  $$$$$$$\ $$\     $$\
@@ -170,4 +184,11 @@ $$ |  $$ |\$$$$$$  |$$ | \$$ |$$\       $$$$$$$  |$$ |  $$ |$$$$$$$  |   $$ |
                               \_/
 */
 
+new WatchioRouter();
+
 Backbone.history.start();
+
+var searchResults = new SearchResults();
+var myWatchlist = new Watchlist();
+
+var form = new FormView();
