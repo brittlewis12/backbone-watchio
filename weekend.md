@@ -1,5 +1,5 @@
-###Backbone
-* [Backbone Tutorial](http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/)
+#Backbone
+###[Backbone Tutorial](http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/)
 * a bit outdated (routers renamed, mvc puts more logic in backbone models, views and less in router itself)
 * great general ideas:
     * create a basic App object whose init function (called onload) has two responsibilities:
@@ -33,9 +33,10 @@
         * listenTo functions can re-render ONLY the data that has changed
         * performance (at large scales) && readability improvements
         * more modular code == more maintainable code
-* Testing with Jasmine
 
-###Foundation (zurb-foundation)
+###Testing with Jasmine
+
+#Foundation (zurb-foundation)
 * Class Names
 * SASS
     * Sass for Web Designers (A Book Apart)
