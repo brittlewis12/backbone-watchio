@@ -49,3 +49,7 @@ models
     * string    : username
     * string    : password
     * reference : watchlist_id
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/brittlewis12/backbone-watchio/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
